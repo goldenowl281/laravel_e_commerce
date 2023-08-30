@@ -28,26 +28,23 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="title">Title</label>
-                                            <input type="text" name="title"
-                                            value="{{ $product->title }}" id="title" class="form-control"
-                                                placeholder="Title">
+                                            <input type="text" name="title" value="{{ $product->title }}"
+                                                id="title" class="form-control" placeholder="Title">
                                             <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="slug">Slug</label>
-                                            <input type="text" name="slug"
-                                            value="{{ $product->title }}" id="slug" class="form-control"
-                                                placeholder="Slug" readonly>
+                                            <input type="text" name="slug" value="{{ $product->title }}"
+                                                id="slug" class="form-control" placeholder="Slug" readonly>
                                             <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="description">Description</label>
-                                            <textarea name="description"
-                                             id="description" cols="30" rows="10" class="summernote"
+                                            <textarea name="description" id="description" cols="30" rows="10" class="summernote"
                                                 placeholder="Description">
                                                 {{ $product->description }}
                                             </textarea>
@@ -67,7 +64,23 @@
                             </div>
                         </div>
                         <div class="row" id="product-gallery">
-
+                            @if ($product_images->isNotEmpty())
+                                @foreach ($product_images as $image)
+                                    <div class="col-md-3"
+                                        id="image-row-
+                                    {{ $image->id }}">
+                                        <div class="card">
+                                            <input type="hidden" name="image_array[]" value="{{ $image->id }}">
+                                            <img src="{{ asset('upload-img/product/thumb/' . $image->image) }}"
+                                                class="card-img-top">
+                                            <div class="card-body">
+                                                <a href="javascript:void(0)" onclick="deleteImaged({{ $image->id }})"
+                                                    class="btn btn-danger">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                         <div class="card mb-3">
                             <div class="card-body">
@@ -76,17 +89,16 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="price">Price</label>
-                                            <input type="text" name="price"
-                                            value="{{ $product->price }}" id="price" class="form-control"
-                                                placeholder="Price">
+                                            <input type="text" name="price" value="{{ $product->price }}"
+                                                id="price" class="form-control" placeholder="Price">
                                             <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="compare_price">Compare at Price</label>
-                                            <input type="text" value="{{ $product->compare_price }}" name="compare_price" id="compare_price"
-                                                class="form-control" placeholder="Compare Price">
+                                            <input type="text" value="{{ $product->compare_price }}" name="compare_price"
+                                                id="compare_price" class="form-control" placeholder="Compare Price">
                                             <p class="text-muted mt-3">
                                                 To show a reduced price, move the product’s original price into Compare at
                                                 price. Enter a lower value into Price.
@@ -104,17 +116,15 @@
                                         <div class="mb-3">
                                             <label for="sku">SKU (Stock Keeping Unit)</label>
                                             <input type="text" name="sku" id="sku"
-                                            value="{{ $product->sku }}" class="form-control"
-                                                placeholder="sku">
+                                                value="{{ $product->sku }}" class="form-control" placeholder="sku">
                                             <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="barcode">Barcode</label>
-                                            <input type="text" name="barcode"
-                                            value="{{ $product->barcode }}" id="barcode" class="form-control"
-                                                placeholder="Barcode">
+                                            <input type="text" name="barcode" value="{{ $product->barcode }}"
+                                                id="barcode" class="form-control" placeholder="Barcode">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -123,14 +133,13 @@
                                                 <input type="hidden" name="track_qty" value="No">
                                                 <input class="custom-control-input" type="checkbox" id="track_qty"
                                                     name="track_qty" value="Yes"
-                                                    {{ ($product->track_qty == 'Yes')? 'checked' : '' }} >
+                                                    {{ $product->track_qty == 'Yes' ? 'checked' : '' }}>
                                                 <label for="track_qty" class="custom-control-label">Track Quantity</label>
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <input type="number" min="0" name="qty" id="qty"
-                                            value="{{ $product->qty }}"
-                                                class="form-control" placeholder="Qty">
+                                                value="{{ $product->qty }}" class="form-control" placeholder="Qty">
                                             <p class="error"></p>
                                         </div>
                                     </div>
@@ -144,8 +153,10 @@
                                 <h2 class="h4 mb-3">Product status</h2>
                                 <div class="mb-3">
                                     <select name="status" id="status" class="form-control">
-                                        <option {{ ($product->status == 1)? 'selected': '' }} value="1">Active</option>
-                                        <option {{ ($product->status == 0)? 'selected': '' }}  value="0">Block</option>
+                                        <option {{ $product->status == 1 ? 'selected' : '' }} value="1">Active
+                                        </option>
+                                        <option {{ $product->status == 0 ? 'selected' : '' }} value="0">Block
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -159,7 +170,8 @@
                                         <option value="">Select a category</option>
                                         @if ($categories->isNotEmpty())
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}" {{ ($product->category_id == $category->id)? 'selected': '' }}  >
+                                                <option value="{{ $category->id }}"
+                                                    {{ $product->category_id == $category->id ? 'selected' : '' }}>
                                                     {{ $category->name }}
                                                 </option>
                                             @endforeach
@@ -170,12 +182,11 @@
                                 <div class="mb-3">
                                     <label for="category">Sub category</label>
                                     <select name="sub_category" id="sub_category" class="form-control">
-                                        <option value=""
-
-                                        >Select sub category</option>
+                                        <option value="">Select sub category</option>
                                         @if ($sub_categories->isNotEmpty())
                                             @foreach ($sub_categories as $sub_category)
-                                                <option value="{{ $sub_category->id }}" {{ ($product->sub_category_id == $sub_category->id)? 'selected': '' }}  >
+                                                <option value="{{ $sub_category->id }}"
+                                                    {{ $product->sub_category_id == $sub_category->id ? 'selected' : '' }}>
                                                     {{ $sub_category->name }}
                                                 </option>
                                             @endforeach
@@ -193,7 +204,7 @@
                                         @if ($brands->isNotEmpty())
                                             @foreach ($brands as $brand)
                                                 <option value="{{ $brand->id }}"
-                                                    {{ ($product->brand_id == $brand->id)? 'selected': ''}}  >
+                                                    {{ $product->brand_id == $brand->id ? 'selected' : '' }}>
                                                     {{ $brand->name }}
                                                 </option>
                                             @endforeach
@@ -207,14 +218,10 @@
                                 <h2 class="h4 mb-3">Featured product</h2>
                                 <div class="mb-3">
                                     <select name="is_featured" id="is_featured" class="form-control">
-                                        <option value="No"
-                                        {{ ($product->is_featured == "No")?'selected':'' }}
-                                        >
+                                        <option value="No" {{ $product->is_featured == 'No' ? 'selected' : '' }}>
                                             No
                                         </option>
-                                        <option value="Yes"
-                                        {{ ($product->is_featured == "Yes")?'selected':'' }}
-                                        >
+                                        <option value="Yes" {{ $product->is_featured == 'Yes' ? 'selected' : '' }}>
                                             Yes
                                         </option>
                                     </select>
@@ -226,7 +233,7 @@
                 </div>
 
                 <div class="pb-5 pt-3">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                     <a href="{{ route('products.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
                 </div>
 
@@ -278,8 +285,8 @@
                 // }
 
                 $.ajax({
-                    url: '{{ route('products.store') }}',
-                    type: 'post',
+                    url: '{{ route('products.update', $product->id) }}',
+                    type: 'put',
                     data: formData,
                     dataType: 'json',
 
@@ -289,7 +296,7 @@
                         if (response["status"] == true) {
 
                             window.location.href =
-                            "{{ route('products.index') }}";
+                                "{{ route('products.index') }}";
 
                         } else {
                             var errors = response['errors'];
@@ -340,9 +347,12 @@
         Dropzone.autoDiscover = false;
         const dropzone = $("#image").dropzone({
 
-            url: "{{ route('temp-images.create') }}",
+            url: "{{ route('product-images.update') }}",
             maxFiles: 10,
             paramName: 'image',
+            params: {
+                'product_id': "{{ $product->id }}"
+            },
             addRemoveLinks: true,
             acceptedFiles: "image/jpeg,image/png, image/gif",
             headers: {
@@ -356,20 +366,36 @@
                         <img src="${response.image_path}" class="card-img-top">
                         <div class="card-body">
                             <a href="javascript:void(0)"
-                                    onclick="deleteImage(${response.image_id})"
+                                    onclick="deleteImaged(${response.image_id})"
                                     class="btn btn-danger">Delete</a>
                         </div>
                     </div></div>`;
                 $("#product-gallery").append(img_html);
             },
-            complete: function(file){
+            complete: function(file) {
                 this.removeFile(file);
             }
         });
 
-        function deleteImage(id) {
-            $("#image-row-"+id).remove();
+        function deleteImaged(id) {
+            $("#image-row" + id).remove();
+            if (confirm("Are you sure you want to delete image?")) {
+                $.ajax({
+                    url: "{{ route('product-images.delete') }}",
+                    type: 'delete',
+                    data: {
+                        id: id
+                    },
+                    success: function(response) {
+                        if (response.status == true) {
+                            alert(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+            }
+
         }
     </script>
 @endsection
-

@@ -2,7 +2,6 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-    {{ $products }}
     <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">

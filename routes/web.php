@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\ProductImageController;
 use Illuminate\Support\Facades\Session;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -105,9 +106,11 @@ Route::group(['prefix' => 'admin'], function () {
             ->name('brand.delete');
 
         //PRODUCT ROUTES, PRODUCT-SUBCATEGORY
-        Route::get('/product-subcategories/index',
-                [ProductSubCategoryController::class, 'index'])
-                ->name('product-subcategories.index');
+        Route::get(
+            '/product-subcategories/index',
+            [ProductSubCategoryController::class, 'index']
+        )
+            ->name('product-subcategories.index');
 
         Route::get('/products/index', [ProductController::class, 'index'])
             ->name('products.index');
@@ -132,6 +135,12 @@ Route::group(['prefix' => 'admin'], function () {
 
 
         //TEMP IMAGE CREATE
+        Route::post('image/update', [ProductImageController::class, 'update'])
+            ->name('product-images.update');
+
+        Route::delete('image/delete', [ProductImageController::class, 'destory'])
+            ->name('product-images.delete');
+
         Route::post('categories/upload-temp-image', [TempImagesController::class, 'create'])->name('temp-images.create');
 
         Route::get('/categories/getSlug', function (Request $request) {
