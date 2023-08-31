@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProductImageController;
 use Illuminate\Support\Facades\Session;
 use App\Models\Category;
@@ -16,9 +17,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('welcome');
 });
+
+Route::get('/', [FrontController::class, 'index'])->name('front.view');
 
 
 Route::group(['prefix' => 'admin'], function () {

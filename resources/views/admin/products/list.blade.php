@@ -110,7 +110,7 @@
                                                     </path>
                                                 </svg>
                                             </a>
-                                            <a href="{{ route('products.delete', $product->id) }}"
+                                            <a href="" onclick="deleteProduct({{ $product->id }})"
                                                 class="text-danger w-4 h-4 mr-1">
                                                 <svg wire:loading.remove.delay="" wire:target=""
                                                     class="filament-link-icon w-4 h-4 mr-1"
@@ -144,4 +144,30 @@
 @endsection
 
 @section('customJs')
+    <script>
+        function deleteProduct(id) {
+
+            var url = '{{ route('products.delete', 'ID') }}';
+            var newUrl = url.replace("ID", id);
+
+            if (confirm("Are you sure you  want to delete")) {
+                $.ajax({
+                    url: newUrl,
+                    type: 'delete',
+                    data: {},
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response["status"] == true) {
+                            window.location.href = "{{ route('products.index') }}";
+                        } else {
+                            window.location.href = "{{ route('products.index') }}";
+                        }
+                    }
+                });
+            }
+        }
+    </script>
 @endsection

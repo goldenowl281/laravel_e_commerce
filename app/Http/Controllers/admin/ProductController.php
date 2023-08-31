@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -142,7 +143,7 @@ class ProductController extends Controller
         } else {
             //FETCH PRODUCT IMAGES
             $product_images = ProductImage::where('product_id', $product->id)
-                                ->get();
+                ->get();
         }
 
         $sub_categories = SubCategory::where('category_id', $product->category_id)
@@ -169,7 +170,7 @@ class ProductController extends Controller
             'title'         => 'required',
             'slug'          => "required|unique:products,slug,$product->id,id",
             'price'         => 'required|numeric',
-            'sku'           => "required|unique:products,sku,$product->sku,id",
+            'sku'           => "required|unique:products,sku,$product->id,id",
             'track_qty'     => 'required|in:Yes,No',
             'category'      => 'required|numeric',
             'is_featured'   => 'required|in:Yes,No',
@@ -257,5 +258,34 @@ class ProductController extends Controller
     //TO DELETE DATA
     public function destory($id, Request $request)
     {
+        $product = Product::find($id);
+
+        if (empty($product)) {
+            Session::flash('error', "Product not found to delete");
+            return response()->json([
+                'status' => false,
+                'not_found' => true,
+                'message' => "Your input product data not found"
+            ]);
+        }
+
+        $product_images = ProductImage::where('product_id', $id)->get();
+
+        if (!empty($product_images)) {
+
+            foreach ($product_images as $image) {
+                File::delete(public_path('upload-img/product/thumb/' . $image->image));
+                File::delete(public_path('upload-img/product/full-img/' . $image->image));
+            }
+            ProductImage::where('product_id', $id)->delete();
+        }
+
+        $product->delete();
+
+        Session::flash('success', 'Product deleted successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'product deleted successfully'
+        ]);
     }
 }

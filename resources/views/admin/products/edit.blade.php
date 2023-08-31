@@ -378,7 +378,7 @@
         });
 
         function deleteImaged(id) {
-            $("#image-row" + id).remove();
+            $("#image-row-" + id).remove();
             if (confirm("Are you sure you want to delete image?")) {
                 $.ajax({
                     url: "{{ route('product-images.delete') }}",
