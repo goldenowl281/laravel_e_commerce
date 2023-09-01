@@ -53,8 +53,8 @@
                                 <th width="60">ID</th>
                                 <th>Name</th>
                                 <th>Slug</th>
-                                <th width="100">Status</th>
                                 <th width="100">Category</th>
+                                <th width="100">Status</th>
                                 <th width="100">Action</th>
                             </tr>
                         </thead>
@@ -65,6 +65,8 @@
                                         <td>{{ $sub_category->id }}</td>
                                         <td>{{ $sub_category->name }}</td>
                                         <td>{{ $sub_category->slug }}</td>
+                                        <td>{{ $sub_category->categoryName }}</td>
+
                                         <td>
                                             @if ($sub_category->status == 1)
                                                 <svg class="text-success-500 h-6 w-6 text-success"
@@ -84,7 +86,6 @@
                                             @endif
 
                                         </td>
-                                        <td>{{ $sub_category->categoryName }}</td>
                                         <td>
                                             <a href="{{ route('sub-categories.edit', $sub_category->id) }} ">
                                                 <svg class="filament-link-icon w-4 h-4 mr-1 "

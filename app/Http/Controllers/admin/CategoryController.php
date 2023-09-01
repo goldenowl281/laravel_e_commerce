@@ -42,9 +42,10 @@ class CategoryController extends Controller
 
         if ($validator->passes()) {
             $category = new Category();
-            $category->name = $request->name;
-            $category->slug = $request->slug;
-            $category->status = $request->status;
+            $category->name      = $request->name;
+            $category->slug      = $request->slug;
+            $category->status    = $request->status;
+            $category->show_home = $request->show_home;
             $category->save();
 
             // save image
@@ -116,9 +117,10 @@ class CategoryController extends Controller
         ]);
 
         if ($validator->passes()) {
-            $category->name = $request->name;
-            $category->slug = $request->slug;
-            $category->status = $request->status;
+            $category->name      = $request->name;
+            $category->slug      = $request->slug;
+            $category->status    = $request->status;
+            $category->show_home = $request->show_home;
             $category->save();
 
             $oldImage = $category->image;

@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-   
+
     <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">
@@ -47,6 +47,15 @@
                                     <select name="status" id="status" class="form-control">
                                         <option value="1">Active</option>
                                         <option value="2">Block</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="show_home">Show on Home</label>
+                                    <select name="show_home" id="show_home" class="form-control">
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">NO</option>
                                     </select>
                                 </div>
                             </div>

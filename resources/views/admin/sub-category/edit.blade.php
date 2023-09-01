@@ -52,7 +52,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
-                                    <input readonly type="text" name="slug" value="{{ $sub_categories->name }}"
+                                    <input type="text" name="slug" value="{{ $sub_categories->name }}"
                                         id="slug" class="form-control" placeholder="Slug" autocomplete="off">
                                     <p></p>
                                 </div>
@@ -64,6 +64,17 @@
                                         <option {{ $sub_categories->status == 1 ? 'selected' : '' }} value="1">Active
                                         </option>
                                         <option {{ $sub_categories->status == 2 ? 'selected' : '' }} value="2">Block
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="show_home">Show on Home</label>
+                                    <select name="show_home" id="show_home" class="form-control">
+                                        <option {{ $sub_categories->show_home == 'Yes' ? 'selected' : '' }} value="Yes">
+                                            Yes</option>
+                                        <option {{ $sub_categories->show_home == 'No' ? 'selected' : '' }} value="No">NO
                                         </option>
                                     </select>
                                 </div>
