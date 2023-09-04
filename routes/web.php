@@ -11,17 +11,26 @@ use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\shop\ShopController;
 use Illuminate\Support\Facades\Session;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
+
+
+        /// TO SHOW CLIENT FRONT PAGE
 Route::get('/home', function () {
     return view('welcome');
 });
 
-Route::get('/', [FrontController::class, 'index'])->name('front.view');
+Route::get('/', [FrontController::class, 'index'])->name('client.view');
+Route::get('/shop/{category_slug?}/{sub_category_slug?}',
+        [ShopController::class, 'index'])->name('client.shop');
+
+
+
 
 
 Route::group(['prefix' => 'admin'], function () {
@@ -158,3 +167,7 @@ Route::group(['prefix' => 'admin'], function () {
         })->name('categories.getSlug');
     });
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
