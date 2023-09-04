@@ -68,7 +68,7 @@ class ShopController extends Controller
         } else {
             $products = $products->orderBy('id', 'DESC');
         }
-        $products = $products->get();
+        $products = $products->paginate(1);
 
         $data['categories'] = $categories;
         $data['brands']     = $brands;
@@ -82,5 +82,18 @@ class ShopController extends Controller
 
 
         return view('client.shop', $data);
+    }
+
+    public function product ($slug)
+    {
+        $product = Product::where('slug', $slug)->with('product_images')->first();
+
+        if ($product == NULL) {
+            abort(404);
+        }
+
+        $data = [];
+        $data['product'] = $product;
+        return view('client.product', $data);
     }
 }

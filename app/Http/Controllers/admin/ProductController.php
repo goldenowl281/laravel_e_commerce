@@ -62,8 +62,11 @@ class ProductController extends Controller
             $product = new Product();
             $product->title       = $request->title;
             $product->slug        = $request->slug;
-            $product->description = $request->description;
             $product->price       = $request->price;
+            $product->description = $request->description;
+            $product->short_description = $request->short_description;
+            $product->shipping_return   = $request->shipping_return;
+            $product->related_products  = $request->related_products;
             $product->compare_price   = $request->compare_price;
             $product->sku             = $request->sku;
             $product->barcode         = $request->barcode;
@@ -184,8 +187,8 @@ class ProductController extends Controller
 
             $product->title       = $request->title;
             $product->slug        = $request->slug;
-            $product->description = $request->description;
             $product->price       = $request->price;
+            $product->description = $request->description;
             $product->compare_price   = $request->compare_price;
             $product->sku             = $request->sku;
             $product->barcode         = $request->barcode;
@@ -196,6 +199,9 @@ class ProductController extends Controller
             $product->sub_category_id = $request->sub_category;
             $product->brand_id        = $request->product_brand;
             $product->is_featured     = $request->is_featured;
+            $product->short_description = $request->short_description;
+            $product->shipping_return   = $request->shipping_return;
+            $product->related_products  = $request->related_products;
             $product->save();
 
             // SAVE IMAGE IN PRODUCT/THUMP FOLDER AND FULL-IMG FOLDER

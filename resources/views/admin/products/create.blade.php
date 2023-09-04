@@ -44,9 +44,27 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
+                                            <label for="short_description">Short</label>
+                                            <textarea name="short_description" id="short_description" cols="30" rows="10" class="summernote"
+                                                placeholder="Description">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
                                             <label for="description">Description</label>
                                             <textarea name="description" id="description" cols="30" rows="10" class="summernote"
                                                 placeholder="Description"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="shipping_return">
+                                                Shipping Return
+                                            </label>
+                                            <textarea name="shipping_return" id="shipping_return" cols="30" rows="10" class="summernote"
+                                                placeholder="shipping_return">
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -262,7 +280,7 @@
                         if (response["status"] == true) {
 
                             window.location.href =
-                            "{{ route('products.index') }}";
+                                "{{ route('products.index') }}";
 
                         } else {
                             var errors = response['errors'];
@@ -335,14 +353,13 @@
                     </div></div>`;
                 $("#product-gallery").append(img_html);
             },
-            complete: function(file){
+            complete: function(file) {
                 this.removeFile(file);
             }
         });
 
         function deleteImage(id) {
-            $("#image-row-"+id).remove();
+            $("#image-row-" + id).remove();
         }
     </script>
 @endsection
-
