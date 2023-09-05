@@ -54,7 +54,8 @@
                                         <div class="mb-3">
                                             <label for="description">Description</label>
                                             <textarea name="description" id="description" cols="30" rows="10" class="summernote"
-                                                placeholder="Description"></textarea>
+                                                placeholder="Description">
+                                            </textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -146,6 +147,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h2 class="h4 mb-3">Related products</h2>
+                                <div class="mb-3">
+                                    <select name="related_products[]"
+                                            id="related_products" multiple
+                                            class="related_product w-100">
+                                    </select>
+                                    <p class="error"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card mb-3">
@@ -230,6 +243,20 @@
 
 @section('customJs')
     <script>
+        $('.related_product').select2({
+            ajax: {
+                url: '{{ route('products.get') }}',
+                dataType: 'json',
+                tags: true,
+                multiple: true,
+                minimumInputLength: 3,
+                processResults: function (data) {
+                    return {
+                        results: data.tags
+                    };
+                }
+            }
+        });
         $("#title").change(function() {
             element = $(this);
             $("button[type=submit]").prop('disabled', true);

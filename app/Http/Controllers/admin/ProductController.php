@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -64,9 +65,6 @@ class ProductController extends Controller
             $product->slug        = $request->slug;
             $product->price       = $request->price;
             $product->description = $request->description;
-            $product->short_description = $request->short_description;
-            $product->shipping_return   = $request->shipping_return;
-            $product->related_products  = $request->related_products;
             $product->compare_price   = $request->compare_price;
             $product->sku             = $request->sku;
             $product->barcode         = $request->barcode;
@@ -77,6 +75,11 @@ class ProductController extends Controller
             $product->sub_category_id = $request->sub_category;
             $product->brand_id        = $request->product_brand;
             $product->is_featured     = $request->is_featured;
+            $product->short_description = $request->short_description;
+            $product->shipping_return   = $request->shipping_return;
+            $product->related_products  = (!empty($request->related_products)) ?
+                                            implode(',', $request->related_products
+                                            ): '';
             $product->save();
 
             // SAVE IMAGE IN PRODUCT/THUMP FOLDER AND FULL-IMG FOLDER
@@ -143,11 +146,19 @@ class ProductController extends Controller
 
         if (empty($product)) {
             return redirect()->route('products.index')->with('error', "Product not found");
-        } else {
-            //FETCH PRODUCT IMAGES
-            $product_images = ProductImage::where('product_id', $product->id)
-                ->get();
         }
+            //FETCH PRODUCT IMAGES
+        $product_images = ProductImage::where('product_id', $product->id)->get();
+
+        //  FETCH RELATED PRODUCT
+        $related_products = [];
+        if ($product->related_products != '') {
+            $product_arr = explode(',', $product->related_products);
+            $related_products = Product::whereIn('id', $product_arr)->get();
+        }
+
+
+
 
         $sub_categories = SubCategory::where('category_id', $product->category_id)
             ->get();
@@ -160,6 +171,7 @@ class ProductController extends Controller
         $data['categories']     = $categories;
         $data['brands']         = $brands;
         $data['product_images'] = $product_images;
+        $data['related_products'] = $related_products;
         return view('admin.products.edit', $data);
     }
     //TO UPDATE DATA
@@ -201,7 +213,9 @@ class ProductController extends Controller
             $product->is_featured     = $request->is_featured;
             $product->short_description = $request->short_description;
             $product->shipping_return   = $request->shipping_return;
-            $product->related_products  = $request->related_products;
+            $product->related_products  = (!empty($request->related_products)) ?
+                                            implode(',', $request->related_products
+                                            ): '';
             $product->save();
 
             // SAVE IMAGE IN PRODUCT/THUMP FOLDER AND FULL-IMG FOLDER
@@ -293,5 +307,25 @@ class ProductController extends Controller
             'status' => true,
             'message' => 'product deleted successfully'
         ]);
+    }
+
+    //TO GET RELATED DATA
+    public function get (Request $request)
+    {
+        if ($request->term != '') {
+            $products = Product::where('title', 'like','%'.$request->term.'%')
+                            ->get();
+
+            if ($products != NULL) {
+                foreach ($products as $product) {
+                    $temp_product[] = array('id'=> $product->id,
+                                            'text'=> $product->title);
+                }
+            }
+            return response()->json([
+                'tags' => $temp_product,
+                'status'=> true
+            ]);
+        }
     }
 }

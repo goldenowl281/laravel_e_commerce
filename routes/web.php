@@ -149,6 +149,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::delete('/products/delete/{id}', [ProductController::class, 'destory'])
             ->name('products.delete');
 
+        Route::get('/products/get', [ProductController::class, 'get'])
+            ->name('products.get');
+
+
 
 
 
