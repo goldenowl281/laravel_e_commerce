@@ -6,7 +6,7 @@
             <div class="light-font">
                 <ol class="breadcrumb primary-color mb-0">
                     <li class="breadcrumb-item">
-                        <a class="white-text" href="{{ route('client.shop') }}">
+                        <a class="white-text" href="{{ route('client.view') }}">
                             Home
                         </a>
                     </li>
@@ -163,7 +163,7 @@
                                             </a>
 
                                             <div class="product-action">
-                                                <a class="btn btn-dark" href="#">
+                                                <a class="btn btn-dark" href="javascript:void(0)" onclick="addToCart( {{ $product->id }} )">
                                                     <i class="fa fa-shopping-cart"></i> Add To Cart
                                                 </a>
                                             </div>

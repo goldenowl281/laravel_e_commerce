@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\shop\ShopController;
@@ -28,13 +29,18 @@ Route::get('/home', function () {
 
 Route::get('/', [FrontController::class, 'index'])->name('client.view');
 
-Route::get('/shop/{category_slug?}/{sub_category_slug?}',
-                [ShopController::class, 'index']
-            )->name('client.shop');
+Route::get(
+    '/shop/{category_slug?}/{sub_category_slug?}',
+    [ShopController::class, 'index']
+)->name('client.shop');
 
 Route::get('/product/{slug}', [ShopController::class, 'product'])
     ->name('client.product');
 
+//CART CONTROLLER
+Route::get('cart/index', [CartController::class, 'index'])->name('client.cart');
+Route::post('cart/add', [CartController::class, 'addToCart'])
+    ->name('client.addToCart');
 
 
 
