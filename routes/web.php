@@ -39,8 +39,12 @@ Route::get('/product/{slug}', [ShopController::class, 'product'])
 
 //CART CONTROLLER
 Route::get('cart/index', [CartController::class, 'index'])->name('client.cart');
-Route::post('cart/add', [CartController::class, 'addToCart'])
+Route::post('cart/add', [CartController::class, 'add'])
     ->name('client.addToCart');
+Route::post('cart/update', [CartController::class, 'update'])
+    ->name('client.updateCart');
+Route::post('cart/delete', [CartController::class, 'destory'])
+    ->name('client.deleteCart');
 
 
 

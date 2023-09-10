@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
@@ -16,7 +17,7 @@ class CartController extends Controller
         return view('client.cart', $data);
     }
 
-    public function addToCart(Request $request)
+    public function add(Request $request)
     {
         $product = Product::with('product_images')->find($request->id);
 
@@ -79,4 +80,65 @@ class CartController extends Controller
             'message' => $message
         ]);
     }
+
+    public function update (Request $request)
+    {
+        $row_id = $request->row_id;
+        $qty    = $request->qty;
+
+        $product_info =  Cart::get($row_id);
+        $product = Product::find($product_info->id);
+
+        if ($product->track_qty == 'Yes') {
+
+            if ($product->qty >= $qty ) {
+                Cart::update($row_id, $qty);
+                $message = "Cart updated successfully";
+                $status = true;
+                Session::flash('success', $message);
+            } else {
+                $message = "We have only left  '.$product->qty.' item";
+                $status = false;
+                Session::flash('error', $message);
+            }
+        } else {
+            Cart::update($row_id, $qty);
+                $message = "Cart updated successfully";
+                $status = true;
+                Session::flash('success', $message);
+        }
+
+        return response()->json([
+            "status" => $status,
+            "message"=> $message
+        ]);
+    }
+
+    public function destory (Request $request)
+    {
+        $row_id = $request->row_id;
+        $item_info = Cart::get ($row_id);
+
+        if ( $item_info == NULL ) {
+            $message = 'Item not found in cart';
+            Session::flash('error', $message);
+            return response()->json([
+                'status' => false,
+                'message' => $message
+            ]);
+        } else {
+
+            Cart::remove($row_id);
+            $message = 'Item removed from cart successfully';
+
+            Session::flash('success', $message);
+
+            return response()->json([
+                'status' => true,
+                'message' => $message
+            ]);
+        }
+    }
+
+
 }

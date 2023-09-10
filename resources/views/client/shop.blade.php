@@ -147,16 +147,17 @@
                                 <div class="col-md-4">
                                     <div class="card product-card">
                                         <div class="product-image position-relative">
-                                            <a href="" class="product-img"></a>
+                                            <a href="{{ route('client.product', $product->slug) }}" class="product-img">
 
-                                            @if (!empty($product_img->image))
-                                                <img class="card-img-top"
-                                                    src="{{ asset('upload-img/product/thumb/' . $product_img->image) }}"
-                                                    alt="">
-                                            @else
-                                                <img src="{{ asset('admin-assets/img/default-150x150.png') }}"
-                                                    class="card-img-top" alt="">
-                                            @endif
+                                                @if (!empty($product_img->image))
+                                                    <img class="card-img-top"
+                                                        src="{{ asset('upload-img/product/thumb/' . $product_img->image) }}"
+                                                        alt="">
+                                                @else
+                                                    <img src="{{ asset('admin-assets/img/default-150x150.png') }}"
+                                                        class="card-img-top" alt="">
+                                                @endif
+                                            </a>
 
                                             <a class="whishlist" href="222">
                                                 <i class="far fa-heart"></i>
