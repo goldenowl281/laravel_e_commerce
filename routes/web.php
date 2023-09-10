@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProductImageController;
@@ -45,6 +46,22 @@ Route::post('cart/update', [CartController::class, 'update'])
     ->name('client.updateCart');
 Route::post('cart/delete', [CartController::class, 'destory'])
     ->name('client.deleteCart');
+
+//AUTH CONTROLLER
+Route::group(['prefix'=> 'client'], function(){
+
+    Route::group(['middleware' => 'guest'], function(){
+
+        Route::get('/register', [AuthController::class, 'register'])
+            ->name('client.register');
+        Route::post('/processRegister', [AuthController::class, 'processRegister'])
+            ->name('client.processRegister');
+        Route::get('/login', [AuthController::class, 'login'])
+            ->name('client.login');
+        Route::post('/processLogin', [AuthController::class, 'processLogin'])
+            ->name('client.processLogin');
+    });
+});
 
 
 
