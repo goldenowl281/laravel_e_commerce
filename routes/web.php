@@ -61,6 +61,15 @@ Route::group(['prefix'=> 'client'], function(){
         Route::post('/processLogin', [AuthController::class, 'processLogin'])
             ->name('client.processLogin');
     });
+
+    //AUTHENTICATED ROUTES
+     Route::group(['middleware' => 'auth'], function(){
+
+        Route::get('/profile', [AuthController::class, 'profile'])
+            ->name('client.profile');
+        Route::get('/logout', [AuthController::class, 'logout'])
+            ->name('client.logout');
+     });
 });
 
 
