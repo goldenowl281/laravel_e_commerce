@@ -43,7 +43,7 @@
                     </div>
                 @endif
 
-                @if (Cart::count()>0)
+                @if (Cart::count() > 0)
                     <div class="col-md-8">
                         <div class="table-responsive">
                             <table class="table" id="cart">
@@ -98,7 +98,9 @@
                                                 ${{ $item->price * $item->qty }}
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-danger" onclick="deleteItem('{{ $item->rowId }}')"><i class="fa fa-times"></i></button>
+                                                <button class="btn btn-sm btn-danger"
+                                                    onclick="deleteItem('{{ $item->rowId }}')"><i
+                                                        class="fa fa-times"></i></button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -125,7 +127,8 @@
                                     <div>${{ Cart::subtotal() }}</div>
                                 </div>
                                 <div class="pt-5">
-                                    <a href="login.php" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+                                    <a href="{{ route('client.checkout') }}" class="btn-dark btn btn-block w-100">Proceed
+                                        to Checkout</a>
                                 </div>
                             </div>
                         </div>
@@ -188,21 +191,22 @@
                 }
             });
         }
+
         function deleteItem(row_id) {
 
             if (confirm('Are you sure you want to remove')) {
 
                 $.ajax({
-                url: '{{ route('client.deleteCart') }}',
-                type: 'post',
-                data: {
-                    row_id: row_id
-                },
-                dataType: 'json',
-                success: function(response) {
-                    window.location.href = '{{ route('client.cart') }}';
-                }
-            });
+                    url: '{{ route('client.deleteCart') }}',
+                    type: 'post',
+                    data: {
+                        row_id: row_id
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        window.location.href = '{{ route('client.cart') }}';
+                    }
+                });
             }
         }
     </script>

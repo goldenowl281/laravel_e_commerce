@@ -46,6 +46,8 @@ Route::post('cart/update', [CartController::class, 'update'])
     ->name('client.updateCart');
 Route::post('cart/delete', [CartController::class, 'destory'])
     ->name('client.deleteCart');
+Route::get('cart/checkout', [CartController::class, 'checkout'])
+    ->name('client.checkout');
 
 //AUTH CONTROLLER
 Route::group(['prefix'=> 'client'], function(){

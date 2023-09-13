@@ -68,6 +68,9 @@ class AuthController extends Controller
                 ],
                 $request->get('remember')
             )) {
+                if (session()->has('url.intended')) {
+                    return redirect(session()->get('url.intended'));
+                }
                 return redirect()->route('client.profile')
                     ->with('success', 'Login success');
             } else {
@@ -91,6 +94,6 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('client.login')
-                         ->with('success', 'you logged out');
+            ->with('success', 'you logged out');
     }
 }
